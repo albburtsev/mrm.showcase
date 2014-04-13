@@ -6,9 +6,26 @@
 	<title>Mail.Ru Maps traffic showcase</title>
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 	<link rel="stylesheet" href="static/css/app.css">
+	<script src="http://maps.mail.ru/api/3.2.0/desk.mrm.js"></script>
 	<script src="static/js/build.js"></script>
 </head>
 <body>
-	
+	<div class="title"></div>
+	<div class="sidebar">
+		<div class="sidebar__holder">
+			<h1 class="sidebar__head">
+				Москва, пробки – <span class="sidebar__score sidebar__score_color_yellow">5 баллов</span>
+			</h1>
+
+			<!--div class="sidebar__item">
+				<h2 class="sidebar__item__head">Ленинградское шоссе</h2>
+				<p class="sidebar__item__line sidebar__item__line_color_red">В центр – 9 баллов, пробки</p>
+				<p class="sidebar__item__line sidebar__item__line_color_green">В область – 2 балла, свободно</p>
+				<p></p>
+			</div-->
+		</div>
+	</div>
+	<div class="map js-map"></div>
+	<div class="controls"></div>
 </body>
 </html>

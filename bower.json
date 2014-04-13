@@ -1,7 +1,7 @@
 {
   "name": "mrm.showcase",
   "version": "0.0.0",
-  "main": "js/app.min.js",
+  "main": "static/js/app.min.js",
   "authors": "Alexander Burtsev, http://burtsev.me",
   "license": "MIT",
   "private": true,
