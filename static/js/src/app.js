@@ -1,12 +1,14 @@
-jQuery(function() {
+(function() {
 	'use strict';
 
-	var	_map = $('.js-map');
+	var	_map = d3
+		.select('.js-map')
+		.node();
 
 	/**
 	 * Create a map
 	 */
-	var map = mrm.map(_map.get(0));
+	var map = mrm.map(_map);
 
 	map.removeLayer(map.__layerSchema);
 	map.removeControl(map.copyrightControl);
@@ -19,4 +21,4 @@ jQuery(function() {
 	// map.jamsOn();
 
 	window.map = map;
-});
+})();
