@@ -1,0 +1,64 @@
+color-red=#ff4500
+color-green=#32cd32
+color-yellow=#ffa500
+color-gray=#999
+
+.parrot
+	position: absolute
+	bottom: -0.7vw
+	left: 0
+	width: 100%
+	height: 0.7vw
+
+	&__feather
+		float: left
+		width: 10% // tmp
+		height: 100%
+
+		&_green
+			background: color-green
+
+			&_red
+				background: linear-gradient(left, color-green 85%, color-red)
+
+			&_yellow
+				background: linear-gradient(left, color-green 85%, color-yellow)
+
+			&_gray
+				background: linear-gradient(left, color-green 85%, color-gray)
+
+		&_red
+			background: color-red
+
+			&_gray
+				background: linear-gradient(left, color-red 85%, color-gray)
+
+			&_green
+				background: linear-gradient(left, color-red 85%, color-green)
+
+			&_yellow
+				background: linear-gradient(left, color-red 85%, color-yellow)
+
+		&_yellow
+			background: color-yellow
+
+			&_gray
+				background: linear-gradient(left, color-yellow 85%, color-gray)
+
+			&_red
+				background: linear-gradient(left, color-yellow 85%, color-red)
+
+			&_green
+				background: linear-gradient(left, color-yellow 85%, color-green)
+
+		&_gray
+			background: color-gray
+
+			&_red
+				background: linear-gradient(left, color-gray 85%, color-red)
+
+			&_green
+				background: linear-gradient(left, color-gray 85%, color-green)
+
+			&_yellow
+				background: linear-gradient(left, color-gray 85%, color-yellow)
