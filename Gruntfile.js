@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 			},
 			app: {
 				src: [
-					'bower_components/d3/d3.min.js',
+					'bower_components/jquery/dist/jquery.min.js',
 					'static/js/app.min.js'
 				],
 				dest: 'static/js/build.js'
