@@ -26,7 +26,7 @@ jQuery(function($) {
 	 */
 	$.get('static/js/config.json', function(config) {
 		if ( typeof showcase !== 'undefined' ) {
-			showcase.init(config);
+			showcase.init(config, map);
 		}
 	});
 

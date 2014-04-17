@@ -31,7 +31,8 @@ module.exports = function(grunt) {
 			options: {
 				globals: {
 					jQuery: true
-				}
+				},
+				loopfunc: true
 			},
 			app: ['<%= jsSource %>'],
 		},
