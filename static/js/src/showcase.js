@@ -1,5 +1,8 @@
 var showcase = (function() {
 	return {
+		/**
+		 * Inits showcase app
+		 */
 		init: function(config, map) {
 			this.config = config;
 			this.map = map;
@@ -19,13 +22,16 @@ var showcase = (function() {
 							points: direction.points.join(',')
 						},
 						success: function(data) {
-							self.addPolyline(this.key, data);
+							self.addPath(this.key, data);
 						}
 					});
 				}
 			}
 		},
 
+		/**
+		 * Inverts multypolyline [[[lon, lat], [lon, lat]]] to polyline [[lat, lon], [lat, lon]]
+		 */
 		invertCoords: function(coords) {
 			for (var i = 0, polyline, inverted = []; i < coords.length; i++) {
 				polyline = coords[i];
@@ -38,7 +44,10 @@ var showcase = (function() {
 			return inverted;
 		},
 
-		addPolyline: function(key, data) {
+		/**
+		 * Adds road path on map
+		 */
+		addPath: function(key, data) {
 			var road = this.config[key];
 
 			if ( road.polyline ) {

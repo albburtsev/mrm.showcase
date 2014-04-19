@@ -9,7 +9,7 @@
 	<script src="http://maps.mail.ru/api/3.2.0/desk.mrm.js"></script>
 </head>
 <body>
-	<div class="title">
+	<div class="title is-hidden">
 		<div>Ленинградский проспект (в центр) – <span class="score score_color_yellow">5 баллов</span></div>
 		<div class="parrot js-parrot">
 			<!--
@@ -41,36 +41,40 @@
 			-->
 		</div>
 	</div>
+
 	<div class="sidebar">
 		<div class="sidebar__holder">
-			<h1 class="sidebar__head">
+			<h1 class="sidebar__head is-loading">
 				Москва, пробки – <span class="score score_color_red">10 баллов</span>
+				<div class="spinner"></div>
 			</h1>
 
-			<div class="sidebar__item sidebar__item_color_yellow">
+			<!--div class="sidebar__item sidebar__item_color_yellow">
 				<h2 class="sidebar__item__title">Ленинградский проспект (в центр) – 5 баллов</h2>
 				<div class="parrot parrot_left js-parrot">
-					<!-- todo -->
+					
 				</div>
 			</div>
 
 			<div class="sidebar__item sidebar__item_color_green">
 				<h2 class="sidebar__item__title">Ленинградский проспект (в область) – 2 балла</h2>
 				<div class="parrot parrot_left js-parrot">
-					<!-- todo -->
+					
 				</div>
 			</div>
 
 			<div class="sidebar__item  sidebar__item_color_red">
 				<h2 class="sidebar__item__title">Садовое кольцо (внешняя сторона) – 9 баллов</h2>
 				<div class="parrot parrot_left js-parrot">
-					<!-- todo -->
+					
 				</div>
-			</div>
+			</div-->
 		</div>
 	</div>
+
 	<div class="map js-map"></div>
-	<div class="controls">
+
+	<div class="controls is-hidden">
 		<div class="control" title="Pause"><i class="icon-pause"></i></div>
 		<div class="control" title="Play"><i class="icon-play"></i></div>
 		<div class="control" title="Next highway"><i class="icon-step-forward"></i></div>

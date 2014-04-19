@@ -50,7 +50,10 @@ module.exports = function(grunt) {
 			},
 			app: {
 				files: {
-					'static/js/app.min.js': '<%= jsSource %>'
+					'static/js/app.min.js': [
+						'bower_components/spin.js/spin.js',
+						'<%= jsSource %>'
+					]
 				}
 			}
 		},
