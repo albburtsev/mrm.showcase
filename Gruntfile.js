@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		jsSource: [
+			'static/js/src/utils.js',
 			'static/js/src/app.js',
 			'static/js/src/map.js',
 			'static/js/src/spinner.js'
@@ -87,7 +88,7 @@ module.exports = function(grunt) {
 		watch: {
 			js: {
 				files: ['<%= jsSource %>'],
-				tasks: ['jshint', 'jscs', 'uglify', 'concat']
+				tasks: ['concat:app', 'jshint', 'jscs', 'uglify', 'concat:build']
 			},
 			css: {
 				files: ['<%= cssSource %>'],

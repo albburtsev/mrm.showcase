@@ -13,8 +13,12 @@
 	map.removeControl(map.copyrightControl);
 	map.removeControl(map.logoControl);
 
-	L.tileLayer('http://t{s}maps.mail.ru/tiles/scheme/{z}/{y}/{x}.png', {
+	var tileLayer = L.tileLayer('http://t{s}maps.mail.ru/tiles/scheme/{z}/{y}/{x}.png', {
 		subdomains: '0123456789'
 	}).addTo(map);
+
+	tileLayer.on('load', function() {
+		_win.trigger('mapinit.showcase');
+	});
 
 	window.map = map;

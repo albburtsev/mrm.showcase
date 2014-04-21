@@ -1,29 +1,69 @@
 jQuery(function($) {
 	'use strict';
 
+	var utils = {
+		/**
+		 * Simple inflection 
+		 */
+		inflect: function (i, forms) { // 
+			var index,
+				dec = (i = parseInt(i, 10)) % 10,
+				hun = i % 100;
+
+			if (dec == 1 && hun != 11) {
+				index = 0;
+			} else if (dec >= 2 && dec <= 4 && Math.floor(hun / 10) != 1) {
+				index = 1;
+			} else {
+				index = 2;
+			}
+			return forms[index];
+		},
+
+		/**
+		 * Inverts multypolyline [[[lon, lat], [lon, lat]]] to polyline [[lat, lon], [lat, lon]]
+		 */
+		invertCoords: function(coords) {
+			for (var i = 0, polyline, inverted = []; i < coords.length; i++) {
+				polyline = coords[i];
+				for (var j = 0, lonlat; j < polyline.length; j++) {
+					lonlat = polyline[j];
+					inverted.push([lonlat[1], lonlat[0]]);
+				}
+			}
+
+			return inverted;
+		},
+
+		/**
+		 * Returns color tag for jams score
+		 */
+		scoreColor: function(score) {
+			score = parseInt(score);
+			score = Math.min(score, 10);
+			score = Math.max(score, 0);
+			if ( score <= 4 ) {
+				return 'green';
+			} else if ( score <= 7 ) {
+				return 'yellow';
+			} else {
+				return 'red';
+			}
+		}
+	};
+
 	var	_win = $(window),
 		_map = $('.js-map'),
+		_title = $('.js-title'),
+		_titleScore = $('.js-score', _title),
+
+		isLoading = 'is-loading',
 		config;
 
 	$.ajaxSetup({
 		dataType: 'json',
 		cache: false
 	});
-
-	/**
-	 * Inverts multypolyline [[[lon, lat], [lon, lat]]] to polyline [[lat, lon], [lat, lon]]
-	 */
-	function invertCoords(coords) {
-		for (var i = 0, polyline, inverted = []; i < coords.length; i++) {
-			polyline = coords[i];
-			for (var j = 0, lonlat; j < polyline.length; j++) {
-				lonlat = polyline[j];
-				inverted.push([lonlat[1], lonlat[0]]);
-			}
-		}
-
-		return inverted;
-	}
 
 	/**
 	 * Adds road path on map
@@ -36,7 +76,7 @@ jQuery(function($) {
 		}
 
 		road.polyline = mrm
-			.polyline(invertCoords(data.points), {
+			.polyline(utils.invertCoords(data.points), {
 				weight: 10,
 				opacity: 1,
 				lineCap: 'round',
@@ -80,16 +120,47 @@ jQuery(function($) {
 		}
 	});
 
+	_win.on('score.showcase', function(e, score) {
+		var colorTag = utils.scoreColor(score),
+			data = _titleScore.data(),
+			forms = data.forms.split(','),
+			classPrefix = data.classPrefix;
+
+		_titleScore
+			.removeClass(['', 'red', 'yellow', 'green'].join(' ' + classPrefix))
+			.addClass(classPrefix + colorTag)
+			.html(score + ' ' + utils.inflect(score, forms));
+		_title.removeClass(isLoading);
+	});
+
 	/*
 	 * Gets config
 	 */
 	$.get('static/js/config.json', function(data) {
-		//if ( typeof showcase !== 'undefined' ) {
-			// showcase.init(config, map);
-		//}
-
 		config = data;
-		_win.trigger('init.showcase');
+		// _win.trigger('init.showcase');
+	});
+
+	/**
+	 * Gets jams score
+	 */
+	_win.on('mapinit.showcase', function() {
+		var mailru = window.mailru || {};
+		mailru.maps = mailru.maps || {};
+		window.mailru = mailru;
+
+		mailru.maps.cityjams = function(data) {
+			var moscowId = '77';
+
+			data = data || {};
+			data = data[moscowId];
+			
+			if ( data && data.score !== undefined ) {
+				_win.trigger('score.showcase', data.score);
+			}
+		};
+		
+		$.getScript('http://maps.mail.ru/jams/jams.jsonp');
 	});
 
 
@@ -108,9 +179,13 @@ jQuery(function($) {
 	map.removeControl(map.copyrightControl);
 	map.removeControl(map.logoControl);
 
-	L.tileLayer('http://t{s}maps.mail.ru/tiles/scheme/{z}/{y}/{x}.png', {
+	var tileLayer = L.tileLayer('http://t{s}maps.mail.ru/tiles/scheme/{z}/{y}/{x}.png', {
 		subdomains: '0123456789'
 	}).addTo(map);
+
+	tileLayer.on('load', function() {
+		_win.trigger('mapinit.showcase');
+	});
 
 	window.map = map;
 

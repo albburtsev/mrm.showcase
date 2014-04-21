@@ -1,26 +1,15 @@
 	var	_win = $(window),
 		_map = $('.js-map'),
+		_title = $('.js-title'),
+		_titleScore = $('.js-score', _title),
+
+		isLoading = 'is-loading',
 		config;
 
 	$.ajaxSetup({
 		dataType: 'json',
 		cache: false
 	});
-
-	/**
-	 * Inverts multypolyline [[[lon, lat], [lon, lat]]] to polyline [[lat, lon], [lat, lon]]
-	 */
-	function invertCoords(coords) {
-		for (var i = 0, polyline, inverted = []; i < coords.length; i++) {
-			polyline = coords[i];
-			for (var j = 0, lonlat; j < polyline.length; j++) {
-				lonlat = polyline[j];
-				inverted.push([lonlat[1], lonlat[0]]);
-			}
-		}
-
-		return inverted;
-	}
 
 	/**
 	 * Adds road path on map
@@ -33,7 +22,7 @@
 		}
 
 		road.polyline = mrm
-			.polyline(invertCoords(data.points), {
+			.polyline(utils.invertCoords(data.points), {
 				weight: 10,
 				opacity: 1,
 				lineCap: 'round',
@@ -77,14 +66,45 @@
 		}
 	});
 
+	_win.on('score.showcase', function(e, score) {
+		var colorTag = utils.scoreColor(score),
+			data = _titleScore.data(),
+			forms = data.forms.split(','),
+			classPrefix = data.classPrefix;
+
+		_titleScore
+			.removeClass(['', 'red', 'yellow', 'green'].join(' ' + classPrefix))
+			.addClass(classPrefix + colorTag)
+			.html(score + ' ' + utils.inflect(score, forms));
+		_title.removeClass(isLoading);
+	});
+
 	/*
 	 * Gets config
 	 */
 	$.get('static/js/config.json', function(data) {
-		//if ( typeof showcase !== 'undefined' ) {
-			// showcase.init(config, map);
-		//}
-
 		config = data;
-		_win.trigger('init.showcase');
+		// _win.trigger('init.showcase');
+	});
+
+	/**
+	 * Gets jams score
+	 */
+	_win.on('mapinit.showcase', function() {
+		var mailru = window.mailru || {};
+		mailru.maps = mailru.maps || {};
+		window.mailru = mailru;
+
+		mailru.maps.cityjams = function(data) {
+			var moscowId = '77';
+
+			data = data || {};
+			data = data[moscowId];
+			
+			if ( data && data.score !== undefined ) {
+				_win.trigger('score.showcase', data.score);
+			}
+		};
+		
+		$.getScript('http://maps.mail.ru/jams/jams.jsonp');
 	});
