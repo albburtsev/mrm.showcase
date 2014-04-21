@@ -6,7 +6,11 @@ module.exports = function(grunt) {
 		.forEach(grunt.loadNpmTasks);
 
 	grunt.initConfig({
-		jsSource: 'static/js/src/*.js',
+		jsSource: [
+			'static/js/src/app.js',
+			'static/js/src/map.js',
+			'static/js/src/spinner.js'
+		],
 		cssSource: 'static/css/**/*.styl',
 
 		banner: 
@@ -34,14 +38,14 @@ module.exports = function(grunt) {
 				},
 				loopfunc: true
 			},
-			app: ['<%= jsSource %>'],
+			app: ['<%= concat.app.dest %>']
 		},
 
 		jscs: {
 			options: {
 				config: '.jscs.json'
 			},
-			app: ['<%= jsSource %>']
+			app: ['<%= concat.app.dest %>']
 		},
 
 		uglify: {
@@ -50,9 +54,9 @@ module.exports = function(grunt) {
 			},
 			app: {
 				files: {
-					'static/js/app.min.js': [
+					'static/js/build/app.min.js': [
 						'bower_components/spin.js/spin.js',
-						'<%= jsSource %>'
+						'static/js/build/app.js'
 					]
 				}
 			}
@@ -63,11 +67,20 @@ module.exports = function(grunt) {
 				separator: '\n;'
 			},
 			app: {
+				options: {
+					banner: 'jQuery(function($) {\n\t\'use strict\';\n\n',
+					footer: '\n});',
+					separator: '\n\n'
+				},
+				src: ['<%= jsSource %>'],
+				dest: 'static/js/build/app.js'
+			},
+			build: {
 				src: [
 					'bower_components/jquery/dist/jquery.min.js',
-					'static/js/app.min.js'
+					'static/js/build/app.min.js'
 				],
-				dest: 'static/js/build.js'
+				dest: 'static/js/build/build.js'
 			}
 		},
 
@@ -83,5 +96,13 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.registerTask('default', ['stylus', 'jshint', 'jscs', 'uglify', 'concat', 'watch']);
+	grunt.registerTask('default', [
+		'stylus',
+		'concat:app',
+		'jshint',
+		'jscs',
+		'uglify',
+		'concat:build',
+		'watch'
+	]);
 };
