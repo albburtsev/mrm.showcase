@@ -23,7 +23,8 @@ module.exports = function(grunt) {
 
 		stylus: {
 			options: {
-				banner: '<%= banner %>'
+				banner: '<%= banner %>',
+				compress: false
 			},
 			app: {
 				files: {
@@ -78,6 +79,7 @@ module.exports = function(grunt) {
 			},
 			build: {
 				src: [
+					'bower_components/lodash/dist/lodash.min.js',
 					'bower_components/jquery/dist/jquery.min.js',
 					'static/js/build/app.min.js'
 				],

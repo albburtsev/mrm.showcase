@@ -9,8 +9,10 @@
 	<script src="http://maps.mail.ru/api/3.2.0/desk.mrm.js"></script>
 </head>
 <body>
-	<div class="title is-hidden">
-		<div>Ленинградский проспект (в центр) – <span class="score score_color_yellow">5 баллов</span></div>
+	<script type="text/template" id="tpl_title">
+	<div class="title is-short">
+		&nbsp;
+		<!--Ленинградский проспект (в центр) – <span class="score score_color_yellow">5 баллов</span>-->
 		<div class="parrot js-parrot">
 			<!--
 			<div class="parrot__feather parrot__feather_green"></div>
@@ -41,11 +43,12 @@
 			-->
 		</div>
 	</div>
+	</script>
 
 	<div class="sidebar">
 		<div class="sidebar__holder">
-			<h1 class="sidebar__head js-title is-loading">
-				Москва, пробки – <span data-forms="балл,балла,баллов" data-class-prefix="score_color_" class="score js-score"></span>
+			<h1 class="sidebar__head js-sidebar-head is-loading">
+				Москва, пробки – <span data-forms="балл,балла,баллов" data-class-prefix="score_color_" class="score js-sidebar-score"></span>
 				<div class="spinner"></div>
 			</h1>
 

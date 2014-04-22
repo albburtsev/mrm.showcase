@@ -54,10 +54,13 @@ jQuery(function($) {
 
 	var	_win = $(window),
 		_map = $('.js-map'),
-		_title = $('.js-title'),
-		_titleScore = $('.js-score', _title),
+		_body = $('body'),
+		_sidebarHead = $('.js-sidebar-head'),
+		_sidebarHeadScore = $('.js-sidebar-score'),
 
+		tplTitle = _.template($('#tpl_title').html()),
 		isLoading = 'is-loading',
+		isShort = 'is-short',
 		config;
 
 	$.ajaxSetup({
@@ -85,15 +88,23 @@ jQuery(function($) {
 			})
 			.addTo(map);
 
-		setTimeout(function() {
-			// UGLY: .removeClass('inactive'); does not work for SVG-elements
-			// http://bugs.jquery.com/ticket/10329
-			$('.path.inactive').each(function() {
-				var _this = $(this);
-				_this.attr('class', _this.attr('class').replace('inactive', ''));
-			});
-		}, 1);
+		// UGLY: .removeClass('inactive'); does not work for SVG-elements
+		// http://bugs.jquery.com/ticket/10329
+		$('.path.inactive').each(function() {
+			var _this = $(this);
+			_this
+				.focus().blur() // repaint before transition
+				.attr('class', _this.attr('class').replace('inactive', ''));
+		});
 	}
+
+	_win.on('opentitle.showcase', function() {
+		var	_title = $(tplTitle());
+		_title
+			.appendTo(_body)
+			.focus().blur() // repaint before transition
+			.removeClass(isShort);
+	});
 
 	/**
 	 * Inits showcase app
@@ -120,25 +131,37 @@ jQuery(function($) {
 		}
 	});
 
+	/**
+	 * Shows sidebar head with score
+	 */
 	_win.on('score.showcase', function(e, score) {
 		var colorTag = utils.scoreColor(score),
-			data = _titleScore.data(),
+			data = _sidebarHeadScore.data(),
 			forms = data.forms.split(','),
 			classPrefix = data.classPrefix;
 
-		_titleScore
+		_sidebarHeadScore
 			.removeClass(['', 'red', 'yellow', 'green'].join(' ' + classPrefix))
 			.addClass(classPrefix + colorTag)
 			.html(score + ' ' + utils.inflect(score, forms));
-		_title.removeClass(isLoading);
+
+		_sidebarHead
+			.on('transitionend', function() {
+				_win.trigger('getconfig.showcase');
+			})
+			.removeClass(isLoading);
 	});
 
 	/*
 	 * Gets config
 	 */
-	$.get('static/js/config.json', function(data) {
-		config = data;
-		// _win.trigger('init.showcase');
+	_win.on('getconfig.showcase', function() {
+		$.get('static/js/config.json', function(data) {
+			config = data;
+			_win
+				.trigger('init.showcase')
+				.trigger('opentitle.showcase');
+		});
 	});
 
 	/**
