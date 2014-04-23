@@ -79,7 +79,7 @@
   top: 2vw;
   right: 2vw;
   padding: 1vw 1.3vw;
-  font-size: 2vw;
+  font-size: 2.1vw;
   text-align: center;
   background: #fff;
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.5);
@@ -231,6 +231,7 @@
   padding: 1vw 1.3vw;
   font-size: 2.1vw;
   font-weight: 300;
+  text-align: center;
   white-space: nowrap;
 }
 .sidebar__item {
@@ -320,6 +321,115 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
+#typed-cursor {
+  display: inline-block;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: 100;
+  -webkit-animation: blink 1s infinite;
+  -moz-animation: blink 1s infinite;
+  -o-animation: blink 1s infinite;
+  -ms-animation: blink 1s infinite;
+  animation: blink 1s infinite;
+  border-right: 0.2vw solid #333;
+  color: #fff;
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+
+  50% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+
+  100% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+
+  50% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+
+  100% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+
+  50% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+
+  100% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+
+  50% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+
+  100% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+
+  50% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+
+  100% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
 html,
 body {
   width: 100%;
@@ -329,5 +439,6 @@ body {
   color: #333;
   background: repeat url("../i/giftly.png") 0 0;
   font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
+  font-weight: 300;
   line-height: 1.4;
 }

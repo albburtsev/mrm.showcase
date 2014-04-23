@@ -9,10 +9,13 @@
 	<script src="http://maps.mail.ru/api/3.2.0/desk.mrm.js"></script>
 </head>
 <body>
+	<script type="text/template" id="tpl_score">
+	<span class="score score_color_<%= color %>"></span>
+	</script>
+
 	<script type="text/template" id="tpl_title">
 	<div class="title is-short">
-		&nbsp;
-		<!--Ленинградский проспект (в центр) – <span class="score score_color_yellow">5 баллов</span>-->
+		<span class="title__typed js-typed">&nbsp;</span>
 		<div class="parrot js-parrot">
 			<!--
 			<div class="parrot__feather parrot__feather_green"></div>

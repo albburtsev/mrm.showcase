@@ -58,6 +58,7 @@ module.exports = function(grunt) {
 				files: {
 					'static/js/build/app.min.js': [
 						'bower_components/spin.js/spin.js',
+						'bower_components/typed.js/js/typed.js',
 						'static/js/build/app.js'
 					]
 				}
@@ -80,8 +81,10 @@ module.exports = function(grunt) {
 			build: {
 				src: [
 					'bower_components/lodash/dist/lodash.min.js',
-					'bower_components/jquery/dist/jquery.min.js',
-					'static/js/build/app.min.js'
+					'bower_components/jquery/dist/jquery.js',
+					'bower_components/spin.js/spin.js',
+					'bower_components/typed.js/js/typed.js',
+					'static/js/build/app.js'
 				],
 				dest: 'static/js/build/build.js'
 			}

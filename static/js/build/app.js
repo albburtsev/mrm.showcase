@@ -59,9 +59,14 @@ jQuery(function($) {
 		_sidebarHeadScore = $('.js-sidebar-score'),
 
 		tplTitle = _.template($('#tpl_title').html()),
+		tplScore = _.template($('#tpl_score').html()),
+
 		isLoading = 'is-loading',
 		isShort = 'is-short',
-		config;
+		isProgress = false,
+		current = null,
+		config = {},
+		queue = [];
 
 	$.ajaxSetup({
 		dataType: 'json',
@@ -71,8 +76,17 @@ jQuery(function($) {
 	/**
 	 * Adds road path on map
 	 */
-	function addPath(key, data) {
+	function addPath(key, data, idx) {
 		var road = config[key];
+
+		if ( road && road.directions[idx] ) {
+			queue.push({
+				key: key,
+				route: data,
+				direction: road.directions[idx]
+			});
+			_win.trigger('getroute.showcase');
+		}
 
 		if ( road.polyline ) {
 			return;
@@ -98,12 +112,54 @@ jQuery(function($) {
 		});
 	}
 
+	/**
+	 * Removes typed cursor
+	 */
+	function removeCursor() {
+		$('#typed-cursor').remove();
+	}
+
+	_win.on('getroute.showcase', function() {
+		if ( isProgress ) {
+			return;
+		}
+		isProgress = true;
+		current = queue.shift();
+		_win.trigger('opentitle.showcase');
+	});
+
 	_win.on('opentitle.showcase', function() {
-		var	_title = $(tplTitle());
+		var	_title = $(tplTitle()),
+			_score = $(tplScore({ color: current.route.tag })),
+			_typed = $('.js-typed', _title);
+
+		var typedString = 
+			'^2000 ' +
+			current.direction.title + 
+			' – ';
+
 		_title
 			.appendTo(_body)
 			.focus().blur() // repaint before transition
-			.removeClass(isShort);
+			.removeClass(isShort)
+			.one('transitionend', function() {
+				_typed.typed({
+					strings: [typedString],
+					// typeSpeed: 50,
+					callback: function() {
+						console.log('callback #1');
+						removeCursor();
+						// _score
+						// 	.appendTo(_title)
+						// 	.typed({
+						// 		strings: ['3 балла'],
+						// 		callback: function() {
+						// 			removeCursor();
+						// 		}
+						// 	});
+					}
+				});
+			});
 	});
 
 	/**
@@ -119,12 +175,13 @@ jQuery(function($) {
 
 				$.ajax('http://maps.mail.ru/mroutes', {
 					key: key,
+					idx: i,
 					data: {
 						wtype: 1,
 						points: direction.points.join(',')
 					},
 					success: function(data) {
-						addPath(this.key, data);
+						addPath(this.key, data, this.idx);
 					}
 				});
 			}
@@ -158,9 +215,7 @@ jQuery(function($) {
 	_win.on('getconfig.showcase', function() {
 		$.get('static/js/config.json', function(data) {
 			config = data;
-			_win
-				.trigger('init.showcase')
-				.trigger('opentitle.showcase');
+			_win.trigger('init.showcase');
 		});
 	});
 
